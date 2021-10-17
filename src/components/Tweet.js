@@ -6,7 +6,7 @@ const Tweet = ({ nweetObj, isOwner }) => (
     {isOwner && (
       <>
         <button>Delete Tweet</button>
-        <button>Edit Tweet</button>{" "}
+        <button>Edit Tweet</button>
       </>
     )}
   </div>
