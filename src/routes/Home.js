@@ -8,6 +8,7 @@ import {
   orderBy,
   onSnapshot,
 } from "firebase/firestore";
+import Tweet from "components/Tweet";
 
 const Home = ({ userObj }) => {
   const [tweet, setTweet] = useState("");
@@ -58,9 +59,11 @@ const Home = ({ userObj }) => {
       </form>
       <div>
         {tweets.map((tweet) => (
-          <div key={tweet.id}>
-            <h4>{tweet.text}</h4>
-          </div>
+          <Tweet
+            key={tweet.id}
+            nweetObj={tweet}
+            isOwner={tweet.creatorId === userObj.uid} // 로그인한 유저와 트윗을 만든 유저의 id를 비교
+          />
         ))}
       </div>
     </div>
