@@ -5,18 +5,24 @@ import Auth from "../routes/Auth";
 import Home from "../routes/Home";
 import Navigation from "./Navigation";
 
-const Router = ({ isLoggedIn }) => {
+const Router = ({ isLoggedIn, userObj }) => {
   return (
     <BrowserRouter>
       {isLoggedIn && <Navigation />}
       <Switch>
         {isLoggedIn ? (
           <>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/profile" component={Profile} />
+            <Route exact path="/">
+              <Home userObj={userObj} />
+            </Route>
+            <Route exact path="/profile">
+              <Profile />
+            </Route>
           </>
         ) : (
-          <Route exact path="/" component={Auth} />
+          <Route exact path="/">
+            <Auth />
+          </Route>
         )}
       </Switch>
     </BrowserRouter>

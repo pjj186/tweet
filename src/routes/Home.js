@@ -4,33 +4,36 @@ import {
   addDoc,
   collection,
   serverTimestamp,
-  getDocs,
   query,
+  orderBy,
+  onSnapshot,
 } from "firebase/firestore";
 
-const Home = () => {
+const Home = ({ userObj }) => {
   const [tweet, setTweet] = useState("");
   const [tweets, setTweets] = useState([]);
-  const getTweets = async () => {
-    const q = query(collection(dbService, "tweets"));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      const tweetObj = {
-        ...doc.data(),
-        id: doc.id,
-      };
-      setTweets((prev) => [tweetObj, ...prev]);
-    });
-  };
   useEffect(() => {
-    getTweets();
+    const q = query(
+      collection(dbService, "tweets"),
+      orderBy("createdAt", "desc")
+    );
+    // 데이터베이스에서 뭔가를 하게 되면 알 수 있도록 해주는 것
+    // snapshot을 이용하면 실시간으로 볼 수 있다.
+    onSnapshot(q, (snapshot) => {
+      const tweetArr = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setTweets(tweetArr);
+    });
   }, []);
 
   const onSubmit = async (event) => {
     event.preventDefault();
     await addDoc(collection(dbService, "tweets"), {
-      tweet,
+      text: tweet,
       createdAt: serverTimestamp(),
+      creatorId: userObj.uid,
     });
     setTweet("");
   };
@@ -56,7 +59,7 @@ const Home = () => {
       <div>
         {tweets.map((tweet) => (
           <div key={tweet.id}>
-            <h4>{tweet.tweet}</h4>
+            <h4>{tweet.text}</h4>
           </div>
         ))}
       </div>
