@@ -61,7 +61,7 @@ const Home = ({ userObj }) => {
         {tweets.map((tweet) => (
           <Tweet
             key={tweet.id}
-            nweetObj={tweet}
+            tweetObj={tweet}
             isOwner={tweet.creatorId === userObj.uid} // 로그인한 유저와 트윗을 만든 유저의 id를 비교
           />
         ))}
