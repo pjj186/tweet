@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { dbService } from "fbase";
+import { v4 as uuidv4 } from "uuid";
+import { dbService, storageService } from "fbase";
 import {
   addDoc,
   collection,
@@ -9,6 +10,7 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 import Tweet from "components/Tweet";
+import { ref, uploadString } from "@firebase/storage";
 
 const Home = ({ userObj }) => {
   // 변수
@@ -36,12 +38,15 @@ const Home = ({ userObj }) => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    await addDoc(collection(dbService, "tweets"), {
-      text: tweet,
-      createdAt: serverTimestamp(),
-      creatorId: userObj.uid,
-    });
-    setTweet("");
+    const fileRef = ref(storageService, `${userObj.uid}/${uuidv4()}`); // 파일에 대한 reference 생성
+    const response = await uploadString(fileRef, attachment, "data_url"); // ref, 데이터, 데이터의 형식
+    console.log(response);
+    // await addDoc(collection(dbService, "tweets"), {
+    //   text: tweet,
+    //   createdAt: serverTimestamp(),
+    //   creatorId: userObj.uid,
+    // });
+    // setTweet("");
   };
   const onChange = (event) => {
     const {
