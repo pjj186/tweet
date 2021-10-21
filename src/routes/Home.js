@@ -10,13 +10,13 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 import Tweet from "components/Tweet";
-import { ref, uploadString } from "@firebase/storage";
+import { getDownloadURL, ref, uploadString } from "@firebase/storage";
 
 const Home = ({ userObj }) => {
   // 변수
   const [tweet, setTweet] = useState("");
   const [tweets, setTweets] = useState([]);
-  const [attachment, setAttachment] = useState();
+  const [attachment, setAttachment] = useState("");
   const fileInput = useRef();
 
   // 함수
@@ -38,15 +38,21 @@ const Home = ({ userObj }) => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    const fileRef = ref(storageService, `${userObj.uid}/${uuidv4()}`); // 파일에 대한 reference 생성
-    const response = await uploadString(fileRef, attachment, "data_url"); // ref, 데이터, 데이터의 형식
-    console.log(response);
-    // await addDoc(collection(dbService, "tweets"), {
-    //   text: tweet,
-    //   createdAt: serverTimestamp(),
-    //   creatorId: userObj.uid,
-    // });
-    // setTweet("");
+    let attachmentUrl = "";
+    if (attachment !== "") {
+      const attachmentRef = ref(storageService, `${userObj.uid}/${uuidv4()}`); // 파일에 대한 reference 생성
+      await uploadString(attachmentRef, attachment, "data_url"); // ref, 데이터, 데이터의 형식
+      attachmentUrl = await getDownloadURL(attachmentRef);
+    }
+    const newTweet = {
+      text: tweet,
+      createdAt: serverTimestamp(),
+      creatorId: userObj.uid,
+      attachmentUrl,
+    };
+    await addDoc(collection(dbService, "tweets"), newTweet);
+    setTweet("");
+    setAttachment("");
   };
   const onChange = (event) => {
     const {
@@ -72,7 +78,7 @@ const Home = ({ userObj }) => {
   };
 
   const onClearAttachment = () => {
-    setAttachment(null);
+    setAttachment("");
     fileInput.current.value = null;
   };
 
