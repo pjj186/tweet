@@ -40,6 +40,7 @@ const Home = ({ userObj }) => {
     event.preventDefault();
     let attachmentUrl = "";
     if (attachment !== "") {
+      // attachment가 존재하면
       const attachmentRef = ref(storageService, `${userObj.uid}/${uuidv4()}`); // 파일에 대한 reference 생성
       await uploadString(attachmentRef, attachment, "data_url"); // ref, 데이터, 데이터의 형식
       attachmentUrl = await getDownloadURL(attachmentRef);
