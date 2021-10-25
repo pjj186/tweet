@@ -8,7 +8,7 @@ import Navigation from "./Navigation";
 const Router = ({ isLoggedIn, userObj, setUserObject }) => {
   return (
     <BrowserRouter>
-      {isLoggedIn && <Navigation />}
+      {isLoggedIn && <Navigation userObj={userObj} />}
       <Switch>
         {isLoggedIn ? (
           <>
