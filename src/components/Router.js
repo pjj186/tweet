@@ -16,7 +16,7 @@ const Router = ({ isLoggedIn, userObj, setUserObject }) => {
               <Home userObj={userObj} />
             </Route>
             <Route exact path="/profile">
-              <Profile setUserObject={setUserObject} />
+              <Profile userObj={userObj} setUserObject={setUserObject} />
             </Route>
           </>
         ) : (
