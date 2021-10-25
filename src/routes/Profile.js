@@ -10,7 +10,7 @@ import { withRouter } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { updateProfile } from "@firebase/auth";
 
-const Profile = ({ history, setUserObject, userObj }) => {
+const Profile = ({ refreshUser, history, setUserObject, userObj }) => {
   const [newDisplayName, setNewDisplayName] = useState(userObj.displayName);
   const onLogOutClick = () => {
     authService.signOut();
@@ -45,6 +45,7 @@ const Profile = ({ history, setUserObject, userObj }) => {
     if (userObj.displayName !== newDisplayName) {
       await updateProfile(userObj, { displayName: newDisplayName });
     }
+    refreshUser();
   };
   return (
     <>

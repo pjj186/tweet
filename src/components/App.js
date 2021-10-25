@@ -11,17 +11,31 @@ function App() {
     authService.onAuthStateChanged((user) => {
       if (user) {
         setIsLoggedIn(true);
-        setUserObject(user);
+        setUserObject({
+          displayName: user.displayName,
+          uid: user.uid,
+          // 여기서 updateProfile 함수는 우리가 원하는 updateProfile 함수를 제공해주는 역할
+          updateProfile: (args) => user.updateProfile(args),
+        });
       } else {
         setIsLoggedIn(false);
       }
       setInit(true);
     });
   }, []);
+  const refreshUser = () => {
+    const user = authService.currentUser;
+    setUserObject({
+      displayName: user.displayName,
+      uid: user.uid,
+      updateProfile: (args) => user.updateProfile(args),
+    });
+  };
   return (
     <>
       {init ? (
         <Router
+          refreshUser={refreshUser}
           isLoggedIn={isLoggedIn}
           userObj={userObj}
           setUserObject={setUserObject}
