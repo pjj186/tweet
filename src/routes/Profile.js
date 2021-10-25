@@ -29,6 +29,7 @@ const Profile = ({ history, setUserObject, userObj }) => {
   };
   useEffect(() => {
     getMyTweets();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <>
