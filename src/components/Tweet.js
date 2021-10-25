@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { dbService } from "fbase";
+import { dbService, storageService } from "fbase";
 import { doc, deleteDoc, updateDoc } from "firebase/firestore";
+import { deleteObject, ref } from "@firebase/storage";
 
 const Tweet = ({ tweetObj, isOwner }) => {
   const [editing, setEditing] = useState(false); // editing 모드를 위한 상태
@@ -12,6 +13,9 @@ const Tweet = ({ tweetObj, isOwner }) => {
     if (ok) {
       // 삭제
       await deleteDoc(TweetTextRef);
+      // tweetObj의 attachmentUrl의 ref을 스토리지에서 삭제
+      // attachmentUrl은 파일이 저장된 경로이고, 스토리지 내의 그 경로의 object를 삭제해주는거
+      await deleteObject(ref(storageService, tweetObj.attachmentUrl));
     }
   };
 
