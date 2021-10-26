@@ -11,7 +11,16 @@ const Router = ({ refreshUser, userObj, setUserObject }) => {
       {userObj && <Navigation userObj={userObj} />}
       <Switch>
         {userObj ? (
-          <>
+          <div
+            style={{
+              maxWidth: 890,
+              width: "100%",
+              margin: "0 auto",
+              marginTop: 80,
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
             <Route exact path="/">
               <Home userObj={userObj} />
             </Route>
@@ -22,7 +31,7 @@ const Router = ({ refreshUser, userObj, setUserObject }) => {
                 refreshUser={refreshUser}
               />
             </Route>
-          </>
+          </div>
         ) : (
           <Route exact path="/">
             <Auth />

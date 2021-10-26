@@ -5,10 +5,13 @@ import {
 } from "@firebase/auth";
 import React, { useState } from "react";
 
-const AuthForm = ({ newAccount }) => {
+const AuthForm = () => {
+  const [newAccount, setNewAccount] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  const toggleAccount = () => setNewAccount((prev) => !prev);
 
   const onChange = (e) => {
     const {
@@ -42,7 +45,7 @@ const AuthForm = ({ newAccount }) => {
   };
   return (
     <>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} className="container">
         <input
           name="email"
           type="email"
@@ -50,6 +53,7 @@ const AuthForm = ({ newAccount }) => {
           required
           value={email}
           onChange={onChange}
+          className="authInput"
         />
         <input
           name="password"
@@ -58,10 +62,18 @@ const AuthForm = ({ newAccount }) => {
           required
           value={password}
           onChange={onChange}
+          className="authInput"
         />
-        <input type="submit" value={newAccount ? "Create Account" : "Log In"} />
-        {error}
+        <input
+          type="submit"
+          className="authInput authSubmit"
+          value={newAccount ? "Create Account" : "Log In"}
+        />
+        {error && <span className="authError">{error}</span>}
       </form>
+      <span onClick={toggleAccount} className="authSwitch">
+        {newAccount ? "Sign In" : "Create Account"}
+      </span>
     </>
   );
 };
