@@ -7,7 +7,7 @@ import Navigation from "./Navigation";
 
 const Router = ({ refreshUser, userObj, setUserObject }) => {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       {userObj && <Navigation userObj={userObj} />}
       <Switch>
         {userObj ? (
