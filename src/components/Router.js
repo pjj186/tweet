@@ -5,12 +5,12 @@ import Auth from "../routes/Auth";
 import Home from "../routes/Home";
 import Navigation from "./Navigation";
 
-const Router = ({ refreshUser, isLoggedIn, userObj, setUserObject }) => {
+const Router = ({ refreshUser, userObj, setUserObject }) => {
   return (
     <BrowserRouter>
-      {isLoggedIn && <Navigation userObj={userObj} />}
+      {userObj && <Navigation userObj={userObj} />}
       <Switch>
-        {isLoggedIn ? (
+        {userObj ? (
           <>
             <Route exact path="/">
               <Home userObj={userObj} />

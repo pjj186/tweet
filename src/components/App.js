@@ -4,13 +4,11 @@ import { authService } from "../fbase";
 
 function App() {
   const [init, setInit] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userObj, setUserObject] = useState(null);
   useEffect(() => {
     // 사용자의 로그인 상태의 변화를 관찰하는 관찰자를 추가시켜줌
     authService.onAuthStateChanged((user) => {
       if (user) {
-        setIsLoggedIn(true);
         setUserObject({
           displayName: user.displayName,
           uid: user.uid,
@@ -18,7 +16,6 @@ function App() {
           updateProfile: (args) => user.updateProfile(args),
         });
       } else {
-        setIsLoggedIn(false);
       }
       setInit(true);
     });
@@ -36,7 +33,6 @@ function App() {
       {init ? (
         <Router
           refreshUser={refreshUser}
-          isLoggedIn={isLoggedIn}
           userObj={userObj}
           setUserObject={setUserObject}
         />
