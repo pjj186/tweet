@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { HashRouter, Route, Switch } from "react-router-dom";
 import Profile from "routes/Profile";
 import Auth from "../routes/Auth";
 import Home from "../routes/Home";
@@ -7,7 +7,7 @@ import Navigation from "./Navigation";
 
 const Router = ({ refreshUser, userObj, setUserObject }) => {
   return (
-    <BrowserRouter basename={process.env.PUBLIC_URL}>
+    <HashRouter>
       {userObj && <Navigation userObj={userObj} />}
       <Switch>
         {userObj ? (
@@ -38,7 +38,7 @@ const Router = ({ refreshUser, userObj, setUserObject }) => {
           </Route>
         )}
       </Switch>
-    </BrowserRouter>
+    </HashRouter>
   );
 };
 
